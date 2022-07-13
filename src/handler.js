@@ -120,6 +120,12 @@ const editBookByIdHandler = (request, h) => {
     readPage,
     reading,
   } = request.payload;
+
+  let finished = false;
+  if (pageCount === readPage) {
+    // eslint-disable-next-line no-const-assign
+    finished = true;
+  }
   const updatedAt = new Date().toISOString();
 
   const index = books.findIndex((book) => book.id === id);
@@ -133,6 +139,7 @@ const editBookByIdHandler = (request, h) => {
       publisher,
       pageCount,
       readPage,
+      finished,
       reading,
       updatedAt,
     };
