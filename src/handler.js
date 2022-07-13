@@ -1,20 +1,41 @@
 const { nanoid } = require('nanoid');
 const books = require('./books');
 
-// eslint-disable-next-line consistent-return
 const addBookHandler = (request, h) => {
   const {
-    name, year, author, summary, publisher, pageCount, readPage, reading,
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
   } = request.payload;
+
   const id = nanoid(16);
-  const finished = pageCount === readPage;
+  const finished = false;
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
 
   const newBook = {
-    // eslint-disable-next-line max-len
-    name, id, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt,
+    name,
+    id,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    finished,
+    reading,
+    insertedAt,
+    updatedAt,
   };
+
+  if (pageCount === readPage) {
+    newBook.finished = true;
+  }
 
   books.push(newBook);
 
@@ -26,6 +47,7 @@ const addBookHandler = (request, h) => {
     response.code(400);
     return response;
   }
+
   if (readPage > pageCount) {
     const response = h.response({
       status: 'fail',
@@ -56,4 +78,11 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-module.exports = { addBookHandler };
+const getAllBookHandler = () => ({
+  status: 'success',
+  data: {
+    books,
+  },
+});
+
+module.exports = { addBookHandler, getAllBookHandler };
