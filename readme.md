@@ -1,4 +1,4 @@
-# Notes web application
+# Bookshelf Restfull API
 
 ### Fist Installation
 `npm init --y`
