@@ -78,14 +78,28 @@ const addBookHandler = (request, h) => {
   return response;
 };
 
-const getAllBookHandler = () => ({
-  status: 'success',
-  data: {
-    books,
-  },
-});
+const getAllBookHandler = (request, h) => {
+  const getAllBook = books.map((book) => {
+    // eslint-disable-next-line no-shadow
+    const books = {};
 
-// eslint-disable-next-line consistent-return
+    books.id = book.id;
+    books.name = book.name;
+    books.publisher = book.publisher;
+
+    return books;
+  });
+
+  const response = h.response({
+    status: 'success',
+    data: {
+      books: getAllBook,
+    },
+  });
+  response.code(200);
+  return response;
+};
+
 const getBookByIdHandler = (request, h) => {
   const { id } = request.params;
 
@@ -150,7 +164,7 @@ const editBookByIdHandler = (request, h) => {
       status: 'fail',
       message: 'Gagal memperbarui buku. Mohon isi nama buku',
     });
-    response.code(404);
+    response.code(400);
     return response;
   }
 
